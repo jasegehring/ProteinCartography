@@ -1,0 +1,7 @@
+channels:
+  - bioconda
+dependencies:
+  - famsa
+  - biopython
+  - pandas
+  - python >=3.6

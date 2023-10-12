@@ -10,7 +10,7 @@ from pathlib import Path
 # options in that new file overwrite the defaults.
 configfile: './config_ff.yml'
 
-# Set the input directory
+# Set the input directoryyp
 #### In the future, also accept Uniprot accession numbers, which will be auto-queried and downloaded
 input_dir = Path(config["input_dir"])
 

@@ -78,7 +78,8 @@ rule all:
         output_dir / clusteringresults_dir / (analysis_name + "_leiden_similarity.html"),
         output_dir / clusteringresults_dir / (analysis_name + "_strucluster_similarity.html"),
         output_dir / clusteringresults_dir / (analysis_name + "_semantic_analysis.pdf"),
-        output_dir / clusteringresults_dir / (analysis_name + "_semantic_analysis.html")
+        output_dir / clusteringresults_dir / (analysis_name + "_semantic_analysis.html"),
+        output_dir / clusteringresults_dir / (analysis_name + "_prot_sequences.aln")
 
 ###########################################
 ## make .pdb files using esmfold API query
@@ -457,6 +458,23 @@ rule aggregate_features:
     shell:
         '''
         python ProteinCartography/aggregate_features.py -i {input} -o {output} -v {params.override}
+        '''
+
+rule calculate_msa:
+    '''
+    Calculate the multiple sequence alignment for each protein.
+    '''
+    input:
+        output_dir / clusteringresults_dir / (analysis_name + "_aggregated_features.tsv")
+    output:
+        output_dir / clusteringresults_dir / (analysis_name + "_prot_sequences.fasta"),
+        output_dir / clusteringresults_dir / (analysis_name + "_prot_sequences.aln"),
+        output_dir / clusteringresults_dir / (analysis_name + "_prot_aa_frequencies.tsv")
+    conda:
+        "envs/calculate_msa.yml"
+    shell:
+        '''
+        python ProteinCartography/calculate_msa_and_residue_analysis.py -i {input} -o {output}
         '''
 
 rule plot_interactive:
